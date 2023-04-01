@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <title>[맛집노트]먹깨비들아믿고먹자</title>
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
+    <style>
+        .wrap {
+            width: 900px;
+            margin: auto;
+            text-align: center;
+
+            font-family: 'Gamja Flower', cursive;
+        }
+        .jumbotron {
+            background-color: green;
+            width: 900px;
+            height: 500px;
+
+            text-align: center;
+
+            background-image: url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb4UjU7%2FbtraRwoqzRK%2Ff8ruGQZSr1L9FLcoEBUgR1%2Fimg.png");
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+
+            text-align: center;
+            margin: 20px 0px 10px 0px;
+
+        }
+        .homepagebtn {
+            background: beige;
+            width: 250px;
+            color: white;
+            border-color:beige;
+
+            font-size: 25px;
+            color: brown;
+        }
+        .influencerselect {
+            font-size: 20pt;
+            width: 300px;
+            height: 50px;
+        }
+        .mybtn {
+            font-size: 20pt;
+            font-weight: bold;
+            width: 200px;
+            height: 50px;
+
+            text-align: center;
+        }
+        .list {
+            font-family: 'Poor Story', cursive;
+            font-weight: bold;
+            width: 900px;
+
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            go();
+        });
+
+        function mainpage(){
+            window.location.reload();
+        }
+
+        function go() {
+            $.ajax({
+                type: "POST",
+                url: "/search",
+                data: {sample_give: txt = $('#influencer option:checked').text()},
+                success: function (response) { // 성공하면
+                    alert(response['msg']);
+                }
+            })
+        }
+
+        function showRestaurants() {
+            $.ajax({
+                type: "GET",
+                url: "/search",
+                success: function (response) { // 성공하면
+                    let restaurants=response['all_restaurants']
+                    if ($('#influencer option:checked').text() == "최자 로드") {
+                        alert($('#influencer option:checked').text()+'의 추천 맛집리스트를 보여드릴게요!')
+                        for (let i = 0; i < 24; i++) {
+                            let title = restaurants[i]['title']
+                            let grade = restaurants[i]['grade']
+                            let etc = restaurants[i]['etc']
+                            let image = restaurants[i]['image']
+                            let url = restaurants[i]['url']
+
+                            let temp_html = `<div class="card">
+                                                <img class="card-img-top"
+                                                     src="${image}"
+                                                     alt="Card image cap">
+                                                <div class="card-body">
+                                                    <a href="https://m.place.naver.com/restaurant/83081035/home?entry=pll" class="card-title"> "${title}" </a>
+                                                    <p class="card-text">${grade}"</p>
+                                                    <p class="card-text">"${etc}"</p>
+                                                </div>
+                                            </div>`
+                                    $('#cards-box').append(temp_html)
+                        }
+                    }
+                    if ($('#influencer option:checked').text() == "식신 로드") {
+                        alert($('#influencer option:checked').text()+'의 추천 맛집리스트를 보여드릴게요!')
+                        for (let i = 24; i < 102; i++) {
+                            let title = restaurants[i]['title']
+                            let grade = restaurants[i]['grade']
+                            let etc = restaurants[i]['etc']
+                            let image = restaurants[i]['image']
+                            let url = restaurants[i]['url']
+                            let temp_html = `<div class="card">
+                                                <img class="card-img-top"
+                                                     src="${image}"
+                                                     alt="Card image cap">
+                                                <div class="card-body">
+                                                    <a href="${url}" class="card-title"> "${title}" </a>
+                                                    <p class="card-text">${grade}"</p>
+                                                    <p class="card-text">"${etc}"</p>
+                                                </div>
+                                            </div>`
+                                    $('#cards-box').append(temp_html)
+                        }
+                    }
+                    if ($('#influencer option:checked').text() == "백종원의 3대 천왕") {
+                        alert($('#influencer option:checked').text()+'의 추천 맛집리스트를 보여드릴게요!')
+                        for (let i = 102; i < 202; i++) {
+                            let title = restaurants[i]['title']
+                            let grade = restaurants[i]['grade']
+                            let etc = restaurants[i]['etc']
+                            let image = restaurants[i]['image']
+                            let url = restaurants[i]['url']
+                            let temp_html = `<div class="card">
+                                                <img class="card-img-top"
+                                                     src="${image}"
+                                                     alt="Card image cap">
+                                                <div class="card-body">
+                                                    <a href="https://m.place.naver.com/restaurant/11860442/home?entry=plt" class="card-title"> "${title}" </a>
+                                                    <p class="card-text">${grade}"</p>
+                                                    <p class="card-text">"${etc}"</p>
+                                                </div>
+                                            </div>`
+                                    $('#cards-box').append(temp_html)
+                        }
+                    }
+                    if ($('#influencer option:checked').text() == "맛있는 녀석들") {
+                        alert($('#influencer option:checked').text()+'의 추천 맛집리스트를 보여드릴게요!')
+                        for (let i = 202; i < 302; i++) {
+                            let title = restaurants[i]['title']
+                            let grade = restaurants[i]['grade']
+                            let etc = restaurants[i]['etc']
+                            let image = restaurants[i]['image']
+                            let url = restaurants[i]['url']
+                            let temp_html = `<div class="card">
+                                                <img class="card-img-top"
+                                                     src="${image}"
+                                                     alt="Card image cap">
+                                                <div class="card-body">
+                                                    <a href="https://m.place.naver.com/restaurant/21732929/home?entry=plt" class="card-title"> "${title}" </a>
+                                                    <p class="card-text">${grade}"</p>
+                                                    <p class="card-text">"${etc}"</p>
+                                                </div>
+                                            </div>`
+                                    $('#cards-box').append(temp_html)
+                        }
+                    }
+                    if ($('#influencer option:checked').text() == "수요 미식회") {
+                        alert($('#influencer option:checked').text()+'의 추천 맛집리스트를 보여드릴게요!')
+                        for (let i = 302; i < restaurants.length; i++) {
+                            let title = restaurants[i]['title']
+                            let grade = restaurants[i]['grade']
+                            let etc = restaurants[i]['etc']
+                            let image = restaurants[i]['image']
+                            let url = restaurants[i]['url']
+                            let temp_html = `<div class="card">
+                                                <img class="card-img-top"
+                                                     src="${image}"
+                                                     alt="Card image cap">
+                                                <div class="card-body">
+                                                    <a href="${url}" class="card-title"> "${title}" </a>
+                                                    <p class="card-text">${grade}"</p>
+                                                    <p class="card-text">"${etc}"</p>
+                                                </div>
+                                            </div>`
+                                    $('#cards-box').append(temp_html)
+                        }
+                    }
+
+                }
+            })
+        }
+
+    </script>
+</head>
+
+<body>
+
+<div class="wrap">
+    <div class="jumbotron">
+        <button type="button" class="homepagebtn" onclick="mainpage()">JJRMinSeoul</button>
+    </div>
+    <p>
+    <h2>맛집 추천 프로그램을 선택해주세요:)</h2>
+    </p>
+
+    <select id="influencer" class="influencerselect">
+        <option value="none">==== 맛집탐색 프로그램 ===</option>
+        <option value="choiza">최자 로드</option>
+        <option value="ssin">식신 로드</option>
+        <option value="paik">백종원의 3대 천왕</option>
+        <option value="tastyguys">맛있는 녀석들</option>
+        <option value="wednesdayms">수요 미식회</option>
+    </select>
+    <button onclick="showRestaurants()" class="mybtn">조회</button>
+    <hr>
+</div>
+
+<div class="list">
+    <div class="card-columns" id="cards-box">
+    </div>
+
+</div>
+
+
+</body>
+</html>
